@@ -27,7 +27,7 @@ async function forwardToAuthApi(
         });
 
         // Add client IP address
-        headers['x-forwarded-for'] = req.headers.get('x-forwarded-for')||req.headers.get('x-real-ip')  || '';
+        headers['x-forwarded-for'] = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || '';
 
         // Make request to the authentication API
         const response = await axios({
@@ -52,10 +52,10 @@ async function forwardToAuthApi(
 // Route handlers for different auth endpoints
 export async function POST(
     req: NextRequest,
-    { params }: { params: { auth: string[] } }
+    { params }: { params: Promise<{ auth: string[] }> }
 ) {
-    const paramsAuth = await params;
-    const authPath = paramsAuth.auth.join('/');
+
+    const authPath = (await params).auth.join('/');
     switch (authPath) {
         case 'login':
             return await forwardToAuthApi(req, '/api/login');
@@ -76,9 +76,10 @@ export async function POST(
 
 export async function GET(
     req: NextRequest,
-    { params }: { params: { auth: string[] } }
+    { params }: { params: Promise<{ auth: string[] }> }
 ) {
-    const authPath = params.auth.join('/');
+
+    const authPath = (await params).auth.join('/');
 
     switch (authPath) {
         case 'profile':
@@ -92,9 +93,10 @@ export async function GET(
 
 export async function PUT(
     req: NextRequest,
-    { params }: { params: { auth: string[] } }
+    { params }: { params: Promise<{ auth: string[] }> }
 ) {
-    const authPath = params.auth.join('/');
+
+    const authPath = (await params).auth.join('/');
 
     switch (authPath) {
         case 'profile':
@@ -106,9 +108,10 @@ export async function PUT(
 
 export async function DELETE(
     req: NextRequest,
-    { params }: { params: { auth: string[] } }
+    { params }: { params: Promise<{ auth: string[] }> }
 ) {
-    const authPath = params.auth.join('/');
+
+    const authPath = (await params).auth.join('/');
 
     // Handle session revocation
     if (authPath.startsWith('sessions/')) {

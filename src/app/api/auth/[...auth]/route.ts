@@ -37,7 +37,7 @@ async function forwardToAuthApi(
             headers,
             validateStatus: () => true, // Don't throw on any status code
         });
-        console.log("first,", response.data)
+        console.log("first,", response.data,API_BASE_URL,endpoint)
         // Create NextResponse with the same status and data from API
         return NextResponse.json(response.data, { status: response.status });
     } catch (error) {
@@ -58,17 +58,17 @@ export async function POST(
     const authPath = (await params).auth.join('/');
     switch (authPath) {
         case 'login':
-            return await forwardToAuthApi(req, '/api/login');
+            return await forwardToAuthApi(req, '/login');
         case 'register':
-            return await forwardToAuthApi(req, '/api/register');
+            return await forwardToAuthApi(req, '/register');
         case 'logout':
-            return await forwardToAuthApi(req, '/api/logout');
+            return await forwardToAuthApi(req, '/logout');
         case 'logout-all':
-            return await forwardToAuthApi(req, '/api/logout-all');
+            return await forwardToAuthApi(req, '/logout-all');
         case 'refresh-token':
-            return await forwardToAuthApi(req, '/api/refresh-token');
+            return await forwardToAuthApi(req, '/refresh-token');
         case 'change-password':
-            return await forwardToAuthApi(req, '/api/change-password', 'PUT');
+            return await forwardToAuthApi(req, '/change-password', 'PUT');
         default:
             return NextResponse.json({ error: 'Endpoint not found' }, { status: 404 });
     }
@@ -83,9 +83,9 @@ export async function GET(
 
     switch (authPath) {
         case 'profile':
-            return await forwardToAuthApi(req, '/api/profile', 'GET');
+            return await forwardToAuthApi(req, '/profile', 'GET');
         case 'active-sessions':
-            return await forwardToAuthApi(req, '/api/active-sessions', 'GET');
+            return await forwardToAuthApi(req, '/active-sessions', 'GET');
         default:
             return NextResponse.json({ error: 'Endpoint not found' }, { status: 404 });
     }
@@ -100,7 +100,7 @@ export async function PUT(
 
     switch (authPath) {
         case 'profile':
-            return await forwardToAuthApi(req, '/api/profile', 'PUT');
+            return await forwardToAuthApi(req, '/profile', 'PUT');
         default:
             return NextResponse.json({ error: 'Endpoint not found' }, { status: 404 });
     }
@@ -116,7 +116,7 @@ export async function DELETE(
     // Handle session revocation
     if (authPath.startsWith('sessions/')) {
         const sessionId = authPath.split('/')[1];
-        return await forwardToAuthApi(req, `/api/sessions/${sessionId}`, 'DELETE');
+        return await forwardToAuthApi(req, `/sessions/${sessionId}`, 'DELETE');
     }
 
     return NextResponse.json({ error: 'Endpoint not found' }, { status: 404 });

@@ -8,6 +8,7 @@ import Link from "next/link"
 import { register } from "@/lib/auth"
 import toast from "react-hot-toast"
 import { Eye, EyeOff, Loader2, UserPlus, Lock, CheckCircle, AlertCircle, MailIcon } from "lucide-react"
+import axios  from "axios"
 
 export default function Register() {
   const [email, setEmail] = useState("")
@@ -78,12 +79,28 @@ export default function Register() {
 
     try {
       await register(email, password)
+
       toast.success("Registered successfully! Please log in.")
       router.push("/login")
     } catch (error) {
-      toast.error("Registration failed. Email may already be taken.")
-      console.log("Registration failed: ", error)
-      setIsLoading(false)
+      if (axios.isAxiosError(error) && error.response) {
+        const responseData = error.response.data;
+
+        if (responseData?.error) {
+          toast.error(responseData.error);
+        } else if (Array.isArray(responseData?.errors)) {
+          toast.error(responseData.errors.map((x: { msg: string }) => x.msg).join('\n'));
+        } else {
+          toast.error("Registration failed.");
+        }
+
+        console.error("Registration failed:", error);
+      } else {
+        toast.error("An unexpected error occurred.");
+        console.error("Unexpected error:", error);
+      }
+
+      setIsLoading(false);
     }
   }
 
@@ -162,12 +179,12 @@ export default function Register() {
                       <span className="text-xs font-medium text-gray-700 dark:text-gray-300">Password strength:</span>
                       <span
                         className={`text-xs font-medium ${passwordStrength <= 1
-                            ? "text-red-500"
-                            : passwordStrength === 2
-                              ? "text-orange-500"
-                              : passwordStrength === 3
-                                ? "text-yellow-500"
-                                : "text-avocado-500"
+                          ? "text-red-500"
+                          : passwordStrength === 2
+                            ? "text-orange-500"
+                            : passwordStrength === 3
+                              ? "text-yellow-500"
+                              : "text-avocado-500"
                           }`}
                       >
                         {getStrengthText()}
@@ -243,8 +260,8 @@ export default function Register() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className={`block w-full pl-10 pr-10 py-3 border ${confirmPassword && !passwordsMatch
-                        ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                        : "border-gray-300 dark:border-gray-600 focus:ring-avocado-500 focus:border-avocado-500"
+                      ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-avocado-500 focus:border-avocado-500"
                       } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 dark:bg-gray-700 dark:text-white transition-colors duration-200`}
                     placeholder="Confirm your password"
                     required
@@ -305,8 +322,8 @@ export default function Register() {
                     isLoading || !passwordsMatch || passwordStrength < 3 || !agreeToTerms || email.length < 3
                   }
                   className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-avocado-600 hover:bg-avocado-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-avocado-500 transition-colors duration-200 ${isLoading || !passwordsMatch || passwordStrength < 3 || !agreeToTerms || email.length < 3
-                      ? "opacity-70 cursor-not-allowed"
-                      : "cursor-pointer"
+                    ? "opacity-70 cursor-not-allowed"
+                    : "cursor-pointer"
                     }`}
                 >
                   {isLoading ? (

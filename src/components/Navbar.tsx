@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
 import { logout, isAuthenticated } from "@/lib/auth"
-import { Menu, LinkIcon, LogOut, User, Home, X } from "lucide-react"
+import { Menu, LinkIcon, LogOut, User, Home, X, LayoutDashboard } from "lucide-react"
 
 // Type for NavLink props
 interface NavLinkProps {
@@ -109,8 +109,11 @@ export default function Navbar() {
 
             {auth ? (
               <>
-                <NavLink href="/dashboard" icon={<User size={18} />}>
+                <NavLink href="/dashboard" icon={<LayoutDashboard size={18} />}>
                   Dashboard
+                </NavLink>
+                <NavLink href="/profile" icon={<User size={18} />}>
+                  Profile
                 </NavLink>
                 <NavButton onClick={handleLogout} icon={<LogOut size={18} />}>
                   Logout

@@ -75,7 +75,7 @@ export default function Dashboard() {
             <button
               onClick={fetchUrls}
               disabled={isRefreshing}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-avocado-500 transition-colors duration-200"
             >
               {isRefreshing ? (
                 <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4" />
@@ -86,7 +86,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => router.push("/")}
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-avocado-600 hover:bg-avocado-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-avocado-500 transition-colors duration-200"
             >
               <Plus className="h-4 w-4 mr-2" />
               Create New URL
@@ -99,8 +99,8 @@ export default function Dashboard() {
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
               <div className="flex items-center">
-                <div className="flex-shrink-0 bg-blue-100 dark:bg-blue-900 rounded-md p-3">
-                  <Link className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                <div className="flex-shrink-0 bg-avocado-100 dark:bg-avocado-600 rounded-md p-3">
+                  <Link className="h-6 w-6 text-avocado-600 dark:text-avocado-400" />
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
@@ -163,7 +163,7 @@ export default function Dashboard() {
 
           {isLoading ? (
             <div className="flex justify-center items-center py-12">
-              <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+              <Loader2 className="h-8 w-8 text-avocado-500 animate-spin" />
               <span className="ml-2 text-gray-600 dark:text-gray-400">Loading your URLs...</span>
             </div>
           ) : error ? (
@@ -181,7 +181,7 @@ export default function Dashboard() {
               <div className="mt-6">
                 <button
                   onClick={() => router.push("/")}
-                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-avocado-600 hover:bg-avocado-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-avocado-500"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Create New URL
@@ -198,7 +198,7 @@ export default function Dashboard() {
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <div className="mb-2 sm:mb-0">
                       <div className="flex items-center">
-                        <h3 className="text-sm font-medium text-blue-600 dark:text-blue-400 truncate">
+                        <h3 className="text-sm font-medium text-avocado-600 dark:text-avocado-400 truncate">
                           <a
                             href={url.short_url}
                             target="_blank"

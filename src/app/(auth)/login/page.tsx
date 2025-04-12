@@ -8,6 +8,7 @@ import Link from "next/link"
 import { login } from "@/lib/auth"
 import toast from "react-hot-toast"
 import { Eye, EyeOff, Loader2, LogIn, User, Lock } from "lucide-react"
+import axios from "axios"
 
 export default function Login() {
   const [email, setEmail] = useState("")
@@ -26,9 +27,25 @@ export default function Login() {
       toast.success("Logged in successfully!")
       router.push("/dashboard")
     } catch (error) {
-      toast.error("Login failed. Please check your credentials.")
-      console.log("Login failed:",error)
-      setIsLoading(false)
+      if (axios.isAxiosError(error) && error.response) {
+        const responseData = error.response.data;
+
+        if (responseData?.error) {
+          toast.error(responseData.error);
+        } else if (Array.isArray(responseData?.errors)) {
+          toast.error(responseData.errors.map((x: { msg: string }) => x.msg).join('\n'));
+        } else {
+          toast.error("Login failed. Please check your credentials.")
+        }
+
+        console.log("Login failed:", error)
+      } else {
+        toast.error("Login failed. Please check your credentials.")
+        console.log("Login failed:", error)
+      }
+
+      setIsLoading(false);
+
     }
   }
 
@@ -128,9 +145,8 @@ export default function Login() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-avocado-600 hover:bg-avocado-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-avocado-500 transition-colors duration-200 ${
-                    isLoading ? "opacity-70 cursor-not-allowed" : ""
-                  }`}
+                  className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-avocado-600 hover:bg-avocado-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-avocado-500 transition-colors duration-200 ${isLoading ? "opacity-70 cursor-not-allowed" : ""
+                    }`}
                 >
                   {isLoading ? (
                     <>

@@ -23,7 +23,7 @@ export default function Login() {
     setIsLoading(true)
 
     try {
-      await login(email, password, rememberMe)
+      await login(email.toLowerCase(), password, rememberMe)
       toast.success("Logged in successfully!")
       router.push("/dashboard")
     } catch (error) {
